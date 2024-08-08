@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bookshelf</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>bookshelf</h1>
+  <p class="sub">books i've read, am reading, or want to read</p>
+</header>
+
+<section class="controls">
+  <button id="addBtn">+ add book</button>
+</section>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="reading">reading</button>
+  <button class="tab" data-tab="read">read</button>
+  <button class="tab" data-tab="want">want to read</button>
+</nav>
+
+<main id="list"></main>
+
+<div class="modal" id="modal" hidden>
+  <form class="card" id="bookForm">
+    <h2>add a book</h2>
+    <label>title <input name="title" required></label>
+    <label>author <input name="author" required></label>
+    <label>year <input name="year" type="number" min="0" max="2100"></label>
+    <label>status
+      <select name="status">
+        <option value="reading">reading</option>
+        <option value="read">read</option>
+        <option value="want">want to read</option>
+      </select>
+    </label>
+    <label>notes <textarea name="notes" rows="3"></textarea></label>
+    <div class="row">
+      <button type="button" id="cancel">cancel</button>
+      <button type="submit">save</button>
+    </div>
+  </form>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
