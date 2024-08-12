@@ -19,6 +19,35 @@ header h1 {
   font-style: italic;
 }
 
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e5dcc9;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.stats > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.num {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #8b3a2a;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: #8a7a68;
+  letter-spacing: 0.5px;
+}
+
 .controls {
   margin-bottom: 16px;
 }
@@ -92,6 +121,11 @@ button {
   margin-top: 6px;
 }
 
+.book .stars {
+  color: #8b3a2a;
+  letter-spacing: 1px;
+}
+
 .book .notes {
   margin-top: 8px;
   font-size: 0.9rem;
@@ -134,10 +168,12 @@ button {
   border-radius: 8px;
   padding: 20px;
   width: 100%;
-  max-width: 440px;
+  max-width: 460px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal .card h2 {
@@ -155,4 +191,10 @@ button {
 .modal .row {
   display: flex;
   gap: 8px;
+}
+
+.modal .row label { flex: 1; }
+
+@media (max-width: 520px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
 }

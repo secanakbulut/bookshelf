@@ -12,6 +12,13 @@
   <p class="sub">books i've read, am reading, or want to read</p>
 </header>
 
+<section class="stats" id="stats">
+  <div><span class="num" id="totalRead">0</span><span class="label">finished</span></div>
+  <div><span class="num" id="avgRating">0.0</span><span class="label">avg rating</span></div>
+  <div><span class="num" id="paceVal">--</span><span class="label">days/book</span></div>
+  <div><span class="num" id="thisYear">0</span><span class="label">this year</span></div>
+</section>
+
 <section class="controls">
   <button id="addBtn">+ add book</button>
 </section>
@@ -35,6 +42,20 @@
         <option value="reading">reading</option>
         <option value="read">read</option>
         <option value="want">want to read</option>
+      </select>
+    </label>
+    <div class="row">
+      <label>started <input name="started" type="date"></label>
+      <label>finished <input name="finished" type="date"></label>
+    </div>
+    <label>rating
+      <select name="rating">
+        <option value="0">no rating</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
       </select>
     </label>
     <label>notes <textarea name="notes" rows="3"></textarea></label>
