@@ -3,10 +3,14 @@ const KEY = 'bookshelf.v1';
 
 let books = load();
 let currentTab = 'reading';
+let editingId = null;
 
-const list = document.getElementById('list');
-const modal = document.getElementById('modal');
-const form = document.getElementById('bookForm');
+const $ = s => document.querySelector(s);
+const list = $('#list');
+const search = $('#search');
+const sortSel = $('#sort');
+const modal = $('#modal');
+const form = $('#bookForm');
 
 function load() {
   try {
@@ -58,11 +62,11 @@ function booksThisYear() {
 
 function renderStats() {
   const finished = books.filter(b => b.status === 'read');
-  document.getElementById('totalRead').textContent = finished.length;
-  document.getElementById('avgRating').textContent = avgRating(finished).toFixed(1);
+  $('#totalRead').textContent = finished.length;
+  $('#avgRating').textContent = avgRating(finished).toFixed(1);
   const pace = computePace(finished);
-  document.getElementById('paceVal').textContent = pace ? pace.toFixed(1) : '--';
-  document.getElementById('thisYear').textContent = booksThisYear();
+  $('#paceVal').textContent = pace ? pace.toFixed(1) : '--';
+  $('#thisYear').textContent = booksThisYear();
 }
 
 function stars(n) {
@@ -88,7 +92,10 @@ function bookEl(b) {
     ? `<span class="stars">${stars(b.rating)}</span>` : '';
 
   div.innerHTML = `
-    <button class="del" data-del="${b.id}">x</button>
+    <div class="actions">
+      <button data-edit="${b.id}">edit</button>
+      <button data-del="${b.id}">x</button>
+    </div>
     <div class="t">${escape(b.title)}</div>
     <div class="a">${escape(b.author)}</div>
     <div class="meta">${metaBits.join(' • ')} ${ratingHtml}</div>
@@ -99,7 +106,23 @@ function bookEl(b) {
 
 function render() {
   renderStats();
-  const filtered = books.filter(b => b.status === currentTab);
+  const q = search.value.trim().toLowerCase();
+  const sortBy = sortSel.value;
+
+  let filtered = books.filter(b => b.status === currentTab);
+  if (q) {
+    filtered = filtered.filter(b =>
+      b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q)
+    );
+  }
+
+  filtered.sort((a, b) => {
+    if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0);
+    if (sortBy === 'finished') return (b.finished || '').localeCompare(a.finished || '');
+    if (sortBy === 'title') return a.title.localeCompare(b.title);
+    return (b.added || 0) - (a.added || 0);
+  });
+
   list.innerHTML = '';
   if (!filtered.length) {
     list.innerHTML = `<div class="empty">nothing here yet</div>`;
@@ -117,14 +140,28 @@ document.querySelectorAll('.tab').forEach(t => {
   });
 });
 
-document.getElementById('addBtn').addEventListener('click', () => {
-  form.reset();
-  modal.hidden = false;
-});
+search.addEventListener('input', render);
+sortSel.addEventListener('change', render);
 
-document.getElementById('cancel').addEventListener('click', () => {
+$('#addBtn').addEventListener('click', () => openModal());
+$('#cancel').addEventListener('click', closeModal);
+
+function openModal(book) {
+  editingId = book ? book.id : null;
+  $('#formTitle').textContent = book ? 'edit book' : 'add a book';
+  form.reset();
+  if (book) {
+    Object.entries(book).forEach(([k, v]) => {
+      if (form.elements[k] != null) form.elements[k].value = v ?? '';
+    });
+  }
+  modal.hidden = false;
+}
+
+function closeModal() {
   modal.hidden = true;
-});
+  editingId = null;
+}
 
 form.addEventListener('submit', e => {
   e.preventDefault();
@@ -134,19 +171,33 @@ form.addEventListener('submit', e => {
   data.year = data.year ? Number(data.year) : null;
   // small convenience: a finished date implies status read
   if (data.finished && data.status !== 'read') data.status = 'read';
-  books.push({ id: uid(), added: Date.now(), ...data });
+
+  if (editingId) {
+    const i = books.findIndex(b => b.id === editingId);
+    if (i >= 0) books[i] = { ...books[i], ...data };
+  } else {
+    books.push({ id: uid(), added: Date.now(), ...data });
+  }
   save();
-  modal.hidden = true;
+  closeModal();
   render();
 });
 
 list.addEventListener('click', e => {
-  const id = e.target.dataset.del;
-  if (id && confirm('delete this one?')) {
-    books = books.filter(b => b.id !== id);
-    save();
-    render();
+  const del = e.target.dataset.del;
+  const ed = e.target.dataset.edit;
+  if (del) {
+    if (confirm('delete this one?')) {
+      books = books.filter(b => b.id !== del);
+      save();
+      render();
+    }
+  }
+  if (ed) {
+    const b = books.find(x => x.id === ed);
+    if (b) openModal(b);
   }
 });
 
+// TODO: maybe export to json one day
 render();

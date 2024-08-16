@@ -1,21 +1,44 @@
+:root {
+  --bg: #fbf7f0;
+  --paper: #fff;
+  --ink: #2b2118;
+  --muted: #8a7a68;
+  --accent: #8b3a2a;
+  --line: #e5dcc9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1612;
+    --paper: #221c16;
+    --ink: #f1e7d6;
+    --muted: #8a7a68;
+    --accent: #d27a5e;
+    --line: #3a3128;
+  }
+}
+
+* { box-sizing: border-box; }
+
 body {
   margin: 0 auto;
   padding: 32px 20px 80px;
-  max-width: 720px;
-  font-family: Georgia, serif;
-  background: #fbf7f0;
-  color: #2b2118;
+  max-width: 760px;
+  font-family: Georgia, "Iowan Old Style", serif;
+  background: var(--bg);
+  color: var(--ink);
   line-height: 1.5;
 }
 
 header h1 {
   font-size: 2.2rem;
   margin: 0 0 4px;
+  letter-spacing: -0.5px;
 }
 
 .sub {
-  color: #8a7a68;
-  margin: 0 0 24px;
+  color: var(--muted);
+  margin: 0 0 28px;
   font-style: italic;
 }
 
@@ -23,8 +46,8 @@ header h1 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
-  background: #fff;
-  border: 1px solid #e5dcc9;
+  background: var(--paper);
+  border: 1px solid var(--line);
   border-radius: 6px;
   padding: 16px;
   margin-bottom: 20px;
@@ -39,51 +62,61 @@ header h1 {
 .num {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #8b3a2a;
+  color: var(--accent);
 }
 
 .label {
   font-size: 0.75rem;
-  color: #8a7a68;
+  color: var(--muted);
   letter-spacing: 0.5px;
 }
 
 .controls {
+  display: flex;
+  gap: 8px;
   margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.controls input[type="search"] {
+  flex: 1;
+  min-width: 180px;
 }
 
 input, select, textarea, button {
   font: inherit;
   padding: 8px 10px;
-  border: 1px solid #e5dcc9;
+  border: 1px solid var(--line);
   border-radius: 4px;
-  background: #fff;
-  color: #2b2118;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 button {
   cursor: pointer;
-  background: #2b2118;
-  color: #fbf7f0;
-  border-color: #2b2118;
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
 }
 
+button:hover { opacity: 0.85; }
+
 #addBtn {
-  background: #8b3a2a;
-  border-color: #8b3a2a;
+  background: var(--accent);
+  border-color: var(--accent);
   color: #fff;
 }
 
 .tabs {
   display: flex;
   gap: 4px;
-  border-bottom: 1px solid #e5dcc9;
+  border-bottom: 1px solid var(--line);
   margin-bottom: 16px;
 }
 
 .tab {
   background: transparent;
-  color: #8a7a68;
+  color: var(--muted);
   border: none;
   border-bottom: 2px solid transparent;
   border-radius: 0;
@@ -91,13 +124,13 @@ button {
 }
 
 .tab.active {
-  color: #2b2118;
-  border-bottom-color: #8b3a2a;
+  color: var(--ink);
+  border-bottom-color: var(--accent);
 }
 
 .book {
-  background: #fff;
-  border: 1px solid #e5dcc9;
+  background: var(--paper);
+  border: 1px solid var(--line);
   border-radius: 6px;
   padding: 14px 16px;
   margin-bottom: 10px;
@@ -110,43 +143,48 @@ button {
 }
 
 .book .a {
-  color: #8a7a68;
+  color: var(--muted);
   font-size: 0.9rem;
   font-style: italic;
 }
 
 .book .meta {
   font-size: 0.8rem;
-  color: #8a7a68;
+  color: var(--muted);
   margin-top: 6px;
 }
 
 .book .stars {
-  color: #8b3a2a;
+  color: var(--accent);
   letter-spacing: 1px;
 }
 
 .book .notes {
   margin-top: 8px;
   font-size: 0.9rem;
-  border-left: 2px solid #e5dcc9;
+  border-left: 2px solid var(--line);
   padding-left: 10px;
 }
 
-.book .del {
+.book .actions {
   position: absolute;
   top: 12px;
   right: 12px;
+  display: flex;
+  gap: 4px;
+}
+
+.book .actions button {
   background: transparent;
-  color: #8a7a68;
-  border: 1px solid #e5dcc9;
+  color: var(--muted);
+  border: 1px solid var(--line);
   font-size: 0.75rem;
   padding: 3px 8px;
 }
 
 .empty {
   text-align: center;
-  color: #8a7a68;
+  color: var(--muted);
   padding: 40px 0;
   font-style: italic;
 }
@@ -159,12 +197,13 @@ button {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  z-index: 10;
 }
 
 .modal[hidden] { display: none; }
 
 .modal .card {
-  background: #fff;
+  background: var(--paper);
   border-radius: 8px;
   padding: 20px;
   width: 100%;
@@ -184,7 +223,7 @@ button {
   display: flex;
   flex-direction: column;
   font-size: 0.85rem;
-  color: #8a7a68;
+  color: var(--muted);
   gap: 4px;
 }
 

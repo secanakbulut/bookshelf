@@ -20,6 +20,13 @@
 </section>
 
 <section class="controls">
+  <input type="search" id="search" placeholder="search title or author">
+  <select id="sort">
+    <option value="added">recently added</option>
+    <option value="finished">finished date</option>
+    <option value="rating">rating</option>
+    <option value="title">title</option>
+  </select>
   <button id="addBtn">+ add book</button>
 </section>
 
@@ -33,7 +40,7 @@
 
 <div class="modal" id="modal" hidden>
   <form class="card" id="bookForm">
-    <h2>add a book</h2>
+    <h2 id="formTitle">add a book</h2>
     <label>title <input name="title" required></label>
     <label>author <input name="author" required></label>
     <label>year <input name="year" type="number" min="0" max="2100"></label>
