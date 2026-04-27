@@ -1,5 +1,7 @@
 # bookshelf
 
+![](docs/screenshot.png)
+
 A small reading log. I kept losing track of which books I'd actually finished
 versus the pile I keep meaning to start, so I built this. Three tabs: reading,
 read, want to read. Add a book, give it a rating when you're done, jot a note.
